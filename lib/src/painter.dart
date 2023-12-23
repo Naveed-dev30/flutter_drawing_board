@@ -158,6 +158,11 @@ class _DeepPainter extends CustomPainter {
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
     }
+
+    // Draw the current content (line) on top
+    if (controller.currentContent != null) {
+      controller.currentContent?.draw(canvas, size, true);
+    }
   }
 
   @override
