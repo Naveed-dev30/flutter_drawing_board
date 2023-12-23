@@ -133,6 +133,7 @@ class _UpPainter extends CustomPainter {
     }
 
     controller.currentContent?.draw(canvas, size, false);
+    canvas.restore();
   }
 
   @override
@@ -173,7 +174,7 @@ class _DeepPainter extends CustomPainter {
       contents[i].draw(canvas, size, true);
     }
 
-    // canvas.restore();
+    canvas.restore();
   }
 
   @override
