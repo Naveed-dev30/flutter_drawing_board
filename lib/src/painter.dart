@@ -125,7 +125,7 @@ class _UpPainter extends CustomPainter {
       canvas.save();
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
-      // canvas.restore();
+      canvas.restore();
     }
 
     if (controller.currentContent == null) {
@@ -165,6 +165,12 @@ class _DeepPainter extends CustomPainter {
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
       // canvas.restore();
+    }
+
+    canvas.saveLayer(Offset.zero & size, Paint());
+
+    for (int i = 0; i < controller.currentIndex; i++) {
+      contents[i].draw(canvas, size, true);
     }
 
     canvas.restore();
