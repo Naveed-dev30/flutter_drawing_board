@@ -173,7 +173,7 @@ class _DeepPainter extends CustomPainter {
       contents[i].draw(canvas, size, true);
     }
 
-    canvas.restore();
+    // canvas.restore();
   }
 
   @override
