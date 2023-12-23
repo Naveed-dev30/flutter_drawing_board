@@ -155,6 +155,10 @@ class _DeepPainter extends CustomPainter {
       contents[i].draw(canvas, size, true);
     }
 
+    if (controller.pictureInfo != null) {
+      canvas.drawPicture(controller.pictureInfo!.picture);
+    }
+
     canvas.restore();
   }
 
