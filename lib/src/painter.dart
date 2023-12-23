@@ -150,13 +150,6 @@ class _DeepPainter extends CustomPainter {
     final List<PaintContent> contents = controller.getHistory;
 
     if (contents.isEmpty) {
-      if (controller.pictureInfo != null) {
-        final Rect pictureRect = Offset.zero & size;
-        canvas.save();
-        canvas.clipRect(pictureRect);
-        canvas.drawPicture(controller.pictureInfo!.picture);
-        // canvas.restore();
-      }
       return;
     }
 
@@ -164,6 +157,14 @@ class _DeepPainter extends CustomPainter {
 
     for (int i = 0; i < controller.currentIndex; i++) {
       contents[i].draw(canvas, size, true);
+    }
+
+    if (controller.pictureInfo != null) {
+      final Rect pictureRect = Offset.zero & size;
+      canvas.save();
+      canvas.clipRect(pictureRect);
+      canvas.drawPicture(controller.pictureInfo!.picture);
+      // canvas.restore();
     }
 
     canvas.restore();
