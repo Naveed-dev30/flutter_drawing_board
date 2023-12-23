@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/svg.dart';
 import 'helper/safe_value_notifier.dart';
 import 'paint_contents/paint_content.dart';
 import 'paint_contents/simple_line.dart';
@@ -135,7 +136,8 @@ class DrawingController {
   DrawingController({
     DrawConfig? config,
     PaintContent? content,
-  }) {
+    PictureInfo? pictureInfo,
+  }) : _pictureInfo = pictureInfo {
     _history = <PaintContent>[];
     _currentIndex = 0;
     realPainter = RePaintNotifier();
@@ -163,6 +165,8 @@ class DrawingController {
   /// 底层绘制内容(绘制记录)
   late List<PaintContent> _history;
 
+  PictureInfo? _pictureInfo;
+
   /// 当前controller是否存在
   bool _mounted = true;
 
@@ -180,6 +184,8 @@ class DrawingController {
 
   /// 获取当前步骤索引
   int get currentIndex => _currentIndex;
+
+  PictureInfo? get pictureInfo => _pictureInfo;
 
   /// 获取当前颜色
   Color get getColor => drawConfig.value.color;
