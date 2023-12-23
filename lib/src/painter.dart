@@ -120,12 +120,6 @@ class _UpPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (controller.currentContent == null) {
-      return;
-    }
-
-    controller.currentContent?.draw(canvas, size, false);
-
     if (controller.pictureInfo != null) {
       final Rect pictureRect = Offset.zero & size;
       canvas.save();
@@ -133,6 +127,12 @@ class _UpPainter extends CustomPainter {
       canvas.drawPicture(controller.pictureInfo!.picture);
       canvas.restore();
     }
+
+    if (controller.currentContent == null) {
+      return;
+    }
+
+    controller.currentContent?.draw(canvas, size, false);
   }
 
   @override
@@ -153,18 +153,18 @@ class _DeepPainter extends CustomPainter {
       return;
     }
 
-    canvas.saveLayer(Offset.zero & size, Paint());
-
-    for (int i = 0; i < controller.currentIndex; i++) {
-      contents[i].draw(canvas, size, true);
-    }
-
     if (controller.pictureInfo != null) {
       final Rect pictureRect = Offset.zero & size;
       canvas.save();
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
       canvas.restore();
+    }
+
+    canvas.saveLayer(Offset.zero & size, Paint());
+
+    for (int i = 0; i < controller.currentIndex; i++) {
+      contents[i].draw(canvas, size, true);
     }
 
     canvas.restore();
