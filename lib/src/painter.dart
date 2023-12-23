@@ -122,13 +122,17 @@ class _UpPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (controller.pictureInfo != null) {
       final Rect pictureRect = Offset.zero & size;
+      canvas.save();
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
+      // canvas.restore();
     }
 
-    if (controller.currentContent != null) {
-      controller.currentContent?.draw(canvas, size, false);
+    if (controller.currentContent == null) {
+      return;
     }
+
+    controller.currentContent?.draw(canvas, size, false);
   }
 
   @override
@@ -149,22 +153,27 @@ class _DeepPainter extends CustomPainter {
       return;
     }
 
-    // Draw the picture first
-    if (controller.pictureInfo != null) {
-      final Rect pictureRect = Offset.zero & size;
-      canvas.clipRect(pictureRect);
-      canvas.drawPicture(controller.pictureInfo!.picture);
-    }
+    canvas.saveLayer(Offset.zero & size, Paint());
 
-    // Draw the historical contents
     for (int i = 0; i < controller.currentIndex; i++) {
       contents[i].draw(canvas, size, true);
     }
 
-    // Draw the current content (line) on top
-    if (controller.currentContent != null) {
-      controller.currentContent?.draw(canvas, size, true);
+    if (controller.pictureInfo != null) {
+      final Rect pictureRect = Offset.zero & size;
+      canvas.save();
+      canvas.clipRect(pictureRect);
+      canvas.drawPicture(controller.pictureInfo!.picture);
+      // canvas.restore();
     }
+
+    canvas.saveLayer(Offset.zero & size, Paint());
+
+    for (int i = 0; i < controller.currentIndex; i++) {
+      contents[i].draw(canvas, size, true);
+    }
+
+    canvas.restore();
   }
 
   @override
