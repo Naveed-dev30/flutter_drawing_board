@@ -136,7 +136,7 @@ class _UpPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _UpPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _UpPainter oldDelegate) => false;
 }
 
 /// 底层画板
@@ -177,5 +177,5 @@ class _DeepPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _DeepPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _DeepPainter oldDelegate) => false;
 }
