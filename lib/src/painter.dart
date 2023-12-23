@@ -159,6 +159,14 @@ class _DeepPainter extends CustomPainter {
       contents[i].draw(canvas, size, true);
     }
 
+    if (controller.pictureInfo != null) {
+      final Rect pictureRect = Offset.zero & size;
+      canvas.save();
+      canvas.clipRect(pictureRect);
+      canvas.drawPicture(controller.pictureInfo!.picture);
+      canvas.restore();
+    }
+
     canvas.restore();
   }
 
