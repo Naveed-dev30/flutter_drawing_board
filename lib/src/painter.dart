@@ -118,14 +118,17 @@ class _UpPainter extends CustomPainter {
 
   final DrawingController controller;
 
+  bool needsImage = true;
+
   @override
   void paint(Canvas canvas, Size size) {
-    if (controller.pictureInfo != null) {
-      canvas.drawPicture(controller.pictureInfo!.picture);
-    }
-
     if (controller.currentContent == null) {
       return;
+    }
+
+    if (controller.pictureInfo != null && needsImage) {
+      canvas.drawPicture(controller.pictureInfo!.picture);
+      needsImage = false;
     }
 
     controller.currentContent?.draw(canvas, size, false);
@@ -145,9 +148,6 @@ class _DeepPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final List<PaintContent> contents = controller.getHistory;
 
-    if (controller.pictureInfo != null) {
-      canvas.drawPicture(controller.pictureInfo!.picture);
-    }
     if (contents.isEmpty) {
       return;
     }
