@@ -145,6 +145,9 @@ class _DeepPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final List<PaintContent> contents = controller.getHistory;
 
+    if (controller.pictureInfo != null) {
+      canvas.drawPicture(controller.pictureInfo!.picture);
+    }
     if (contents.isEmpty) {
       return;
     }
