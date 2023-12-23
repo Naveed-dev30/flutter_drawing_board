@@ -149,14 +149,16 @@ class _DeepPainter extends CustomPainter {
       return;
     }
 
-    for (int i = 0; i < controller.currentIndex; i++) {
-      contents[i].draw(canvas, size, true);
-    }
-
+    // Draw the picture first
     if (controller.pictureInfo != null) {
       final Rect pictureRect = Offset.zero & size;
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
+    }
+
+    // Draw the historical contents
+    for (int i = 0; i < controller.currentIndex; i++) {
+      contents[i].draw(canvas, size, true);
     }
 
     // Draw the current content (line) on top
