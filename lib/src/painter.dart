@@ -153,13 +153,13 @@ class _DeepPainter extends CustomPainter {
       canvas.drawPicture(controller.pictureInfo!.picture);
     }
 
-    canvas.saveLayer(Offset.zero & size, Paint());
+    // canvas.saveLayer(Offset.zero & size, Paint());
 
     for (int i = 0; i < controller.currentIndex; i++) {
       contents[i].draw(canvas, size, true);
     }
 
-    canvas.restore();
+    // canvas.restore();
   }
 
   @override
