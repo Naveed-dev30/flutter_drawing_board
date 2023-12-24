@@ -123,10 +123,8 @@ class _UpPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (controller.pictureInfo != null) {
       final Rect pictureRect = Offset.zero & size;
-      canvas.save();
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
-      canvas.restore();
     }
 
     if (controller.currentContent == null) {
