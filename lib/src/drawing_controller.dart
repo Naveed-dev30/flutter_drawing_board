@@ -311,7 +311,7 @@ class DrawingController {
     if (currentContent != null) {
       _history.add(currentContent!);
       _currentIndex = _history.length;
-      // currentContent = null;
+      currentContent = null;
     }
 
     _refresh();
