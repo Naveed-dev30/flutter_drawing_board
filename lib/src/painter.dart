@@ -122,7 +122,6 @@ class _UpPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (controller.pictureInfo != null && show) {
-      show = false;
       final Rect pictureRect = Offset.zero & size;
       canvas.save();
       canvas.clipRect(pictureRect);
@@ -131,6 +130,7 @@ class _UpPainter extends CustomPainter {
     }
 
     if (controller.currentContent == null) {
+      show = false;
       return;
     }
 
