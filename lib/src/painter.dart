@@ -121,6 +121,10 @@ class _UpPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if (!show) {
+      return;
+    }
+
     if (controller.pictureInfo != null && show) {
       final Rect pictureRect = Offset.zero & size;
       canvas.save();
