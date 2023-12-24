@@ -130,9 +130,10 @@ class _UpPainter extends CustomPainter {
     }
 
     if (controller.currentContent == null) {
-      show = false;
       return;
     }
+
+    show = false;
 
     controller.currentContent?.draw(canvas, size, false);
   }
