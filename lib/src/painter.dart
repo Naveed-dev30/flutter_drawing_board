@@ -125,7 +125,7 @@ class _UpPainter extends CustomPainter {
       canvas.save();
       canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
-      // canvas.restore();
+      canvas.restore();
     }
 
     if (controller.currentContent == null) {
