@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'drawing_controller.dart';
 import 'helper/ex_value_builder.dart';
+import 'paint_contents/image.dart';
 import 'paint_contents/paint_content.dart';
 
 /// 绘图板
@@ -121,17 +122,18 @@ class _UpPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (controller.pictureInfo != null) {
-      // final Rect pictureRect = Offset.zero & size;
-      // canvas.clipRect(pictureRect);
-      canvas.drawPicture(controller.pictureInfo!.picture);
-    }
+    // if (controller.pictureInfo != null) {
+    //   final Rect pictureRect = Offset.zero & size;
+    //   canvas.clipRect(pictureRect);
+    //   canvas.drawPicture(controller.pictureInfo!.picture);
+    //
+    // }
 
     if (controller.currentContent == null) {
       return;
     }
 
-    show = false;
+    // show = false;
 
     controller.currentContent?.draw(canvas, size, false);
   }
@@ -150,7 +152,8 @@ class _DeepPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final List<PaintContent> contents = controller.getHistory;
 
-    if (contents.isEmpty) {
+    if (contents.isEmpty && controller.pictureInfo != null) {
+      controller.addContent(ImageContent(controller.pictureInfo!));
       return;
     }
 
