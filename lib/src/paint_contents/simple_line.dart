@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/painting.dart';
 import '../draw_path/draw_path.dart';
 import '../paint_extension/ex_paint.dart';
-import 'package:sky_engine/math/math.dart' as math;
 
 import 'paint_content.dart';
 
