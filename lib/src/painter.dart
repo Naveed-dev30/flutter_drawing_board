@@ -122,8 +122,8 @@ class _UpPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (controller.pictureInfo != null) {
-      final Rect pictureRect = Offset.zero & size;
-      canvas.clipRect(pictureRect);
+      // final Rect pictureRect = Offset.zero & size;
+      // canvas.clipRect(pictureRect);
       canvas.drawPicture(controller.pictureInfo!.picture);
     }
 
@@ -154,13 +154,13 @@ class _DeepPainter extends CustomPainter {
       return;
     }
 
-    if (controller.pictureInfo != null) {
-      final Rect pictureRect = Offset.zero & size;
-      // canvas.save();
-      canvas.clipRect(pictureRect);
-      canvas.drawPicture(controller.pictureInfo!.picture);
-      // canvas.restore();
-    }
+    // if (controller.pictureInfo != null) {
+    //   // final Rect pictureRect = Offset.zero & size;
+    //   // canvas.save();
+    //   // canvas.clipRect(pictureRect);
+    //   canvas.drawPicture(controller.pictureInfo!.picture);
+    //   // canvas.restore();
+    // }
 
     canvas.saveLayer(Offset.zero & size, Paint());
 
