@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 import 'drawing_controller.dart';
@@ -143,7 +145,10 @@ class _DeepPainter extends CustomPainter {
     final List<PaintContent> contents = controller.getHistory;
 
     if (contents.isEmpty && controller.pictureInfo != null) {
-      controller.addContent(ImageContent(controller.pictureInfo!));
+      Future.delayed(Duration(milliseconds: 250)).then((value) {
+        controller.addContent(ImageContent(controller.pictureInfo!));
+      });
+      return;
     }
 
     canvas.saveLayer(Offset.zero & size, Paint());
