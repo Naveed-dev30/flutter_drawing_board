@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:touchable/touchable.dart';
 
 import 'drawing_controller.dart';
 import 'helper/ex_value_builder.dart';
-import 'paint_contents/image.dart';
 import 'paint_contents/paint_content.dart';
 
 /// 绘图板
-class Painter extends StatefulWidget {
+class Painter extends StatelessWidget {
   const Painter({
     super.key,
     required this.drawingController,
@@ -32,47 +30,42 @@ class Painter extends StatefulWidget {
   /// 边缘裁剪方式
   final Clip clipBehavior;
 
-  @override
-  State<Painter> createState() => _PainterState();
-}
-
-class _PainterState extends State<Painter> {
   /// 手指落下
   void _onPointerDown(PointerDownEvent pde) {
-    if (!widget.drawingController.couldStart(1)) {
+    if (!drawingController.couldStart(1)) {
       return;
     }
 
-    widget.drawingController.startDraw(pde.localPosition);
-    widget.onPointerDown?.call(pde);
+    drawingController.startDraw(pde.localPosition);
+    onPointerDown?.call(pde);
   }
 
   /// 手指移动
   void _onPointerMove(PointerMoveEvent pme) {
-    if (!widget.drawingController.couldDraw) {
-      if (widget.drawingController.currentContent != null) {
-        widget.drawingController.endDraw();
+    if (!drawingController.couldDraw) {
+      if (drawingController.currentContent != null) {
+        drawingController.endDraw();
       }
       return;
     }
 
-    widget.drawingController.drawing(pme.localPosition);
-    widget.onPointerMove?.call(pme);
+    drawingController.drawing(pme.localPosition);
+    onPointerMove?.call(pme);
   }
 
   /// 手指抬起
   void _onPointerUp(PointerUpEvent pue) {
-    if (!widget.drawingController.couldDraw ||
-        widget.drawingController.currentContent == null) {
+    if (!drawingController.couldDraw ||
+        drawingController.currentContent == null) {
       return;
     }
 
-    if (widget.drawingController.startPoint == pue.localPosition) {
-      widget.drawingController.drawing(pue.localPosition);
+    if (drawingController.startPoint == pue.localPosition) {
+      drawingController.drawing(pue.localPosition);
     }
 
-    widget.drawingController.endDraw();
-    widget.onPointerUp?.call(pue);
+    drawingController.endDraw();
+    onPointerUp?.call(pue);
   }
 
   /// GestureDetector 占位
@@ -82,8 +75,6 @@ class _PainterState extends State<Painter> {
 
   void _onPanEnd(DragEndDetails ded) {}
 
-  Offset? tapPosition;
-
   @override
   Widget build(BuildContext context) {
     return Listener(
@@ -92,7 +83,7 @@ class _PainterState extends State<Painter> {
       onPointerUp: _onPointerUp,
       behavior: HitTestBehavior.opaque,
       child: ExValueBuilder<DrawConfig>(
-        valueListenable: widget.drawingController.drawConfig,
+        valueListenable: drawingController.drawConfig,
         shouldRebuild: (DrawConfig p, DrawConfig n) =>
             p.fingerCount != n.fingerCount,
         builder: (_, DrawConfig config, Widget? child) {
@@ -104,23 +95,18 @@ class _PainterState extends State<Painter> {
           );
         },
         child: ClipRect(
-          clipBehavior: widget.clipBehavior,
+          clipBehavior: clipBehavior,
           child: RepaintBoundary(
             child: GestureDetector(
-              onTapDown: (details){
-                setState(() {
-                  tapPosition = details.globalPosition;
-                });
-              },
               child: CustomPaint(
                 painter: _DeepPainter(
-                  controller: widget.drawingController,
+                  controller: drawingController,
                   context: context,
-                  tapPosition: tapPosition,
+                  tapPosition: null,
                 ),
                 child: RepaintBoundary(
                   child: CustomPaint(
-                    painter: _UpPainter(controller: widget.drawingController),
+                    painter: _UpPainter(controller: drawingController),
                   ),
                 ),
               ),
@@ -168,27 +154,19 @@ class _DeepPainter extends CustomPainter {
     final List<PaintContent> contents = controller.getHistory;
 
     if (contents.isEmpty && controller.pictureInfo != null) {
-      Future.delayed(Duration(milliseconds: 250)).then((value) {
-        controller.addContent(ImageContent(controller.pictureInfo!));
-      });
+      // Future.delayed(Duration(milliseconds: 250)).then((value) {
+      //   controller.addContent(ImageContent(controller.pictureInfo!));
+      // });
+    }
+
+    if (contents.isEmpty && controller.pictureInfo == null) {
       return;
     }
 
-    canvas.saveLayer(Offset.zero & size, Paint());
+    canvas.saveLayer(Offset.zero & size, Paint()..color = Colors.yellow);
 
     for (int i = 0; i < controller.currentIndex; i++) {
       contents[i].draw(canvas, size, true);
-    }
-
-    // Check if a tap occurred at the position of any element
-    if (tapPosition != null) {
-      for (int i = 0; i < controller.currentIndex; i++) {
-        final PaintContent content = contents[i];
-        if (content.contains(tapPosition!)) {
-          // Change the color of the tapped element
-          content.paint.color = Colors.purple;
-        }
-      }
     }
 
     canvas.restore();
