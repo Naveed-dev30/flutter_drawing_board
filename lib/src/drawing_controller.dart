@@ -304,9 +304,9 @@ class DrawingController {
     _startPoint = null;
     final int hisLen = _history.length;
 
-    if (hisLen > _currentIndex) {
-      _history.removeRange(_currentIndex, hisLen);
-    }
+    // if (hisLen > _currentIndex) {
+    //   _history.removeRange(_currentIndex, hisLen);
+    // }
 
     if (currentContent != null) {
       _history.add(currentContent!);
@@ -314,8 +314,8 @@ class DrawingController {
       currentContent = null;
     }
 
-    // _refresh();
-    // _refreshDeep();
+    _refresh();
+    _refreshDeep();
   }
 
   /// 撤销
