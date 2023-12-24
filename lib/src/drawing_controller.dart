@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'helper/safe_value_notifier.dart';
+import 'paint_contents/image.dart';
 import 'paint_contents/paint_content.dart';
 import 'paint_contents/simple_line.dart';
 
@@ -138,7 +139,9 @@ class DrawingController {
     PaintContent? content,
     PictureInfo? pictureInfo,
   }) : _pictureInfo = pictureInfo {
-    _history = <PaintContent>[];
+    _history = <PaintContent>[
+      if (pictureInfo != null) ImageContent(pictureInfo),
+    ];
     _currentIndex = 0;
     realPainter = RePaintNotifier();
     painter = RePaintNotifier();
