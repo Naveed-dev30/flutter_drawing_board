@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:touchable/touchable.dart';
 
 import 'drawing_controller.dart';
 import 'helper/ex_value_builder.dart';
@@ -98,11 +99,13 @@ class Painter extends StatelessWidget {
         child: ClipRect(
           clipBehavior: clipBehavior,
           child: RepaintBoundary(
-            child: CustomPaint(
-              painter: _DeepPainter(controller: drawingController),
-              child: RepaintBoundary(
-                child: CustomPaint(
-                  painter: _UpPainter(controller: drawingController),
+            child: CanvasTouchDetector(
+              builder: (BuildContext context) => CustomPaint(
+                painter: _DeepPainter(controller: drawingController),
+                child: RepaintBoundary(
+                  child: CustomPaint(
+                    painter: _UpPainter(controller: drawingController),
+                  ),
                 ),
               ),
             ),
