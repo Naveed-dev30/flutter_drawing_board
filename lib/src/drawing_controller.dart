@@ -314,8 +314,8 @@ class DrawingController {
       currentContent = null;
     }
 
-    _refresh();
-    _refreshDeep();
+    // _refresh();
+    // _refreshDeep();
   }
 
   /// 撤销
