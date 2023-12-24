@@ -118,22 +118,12 @@ class _UpPainter extends CustomPainter {
   _UpPainter({required this.controller}) : super(repaint: controller.painter);
 
   final DrawingController controller;
-  bool show = true;
 
   @override
   void paint(Canvas canvas, Size size) {
-    // if (controller.pictureInfo != null) {
-    //   final Rect pictureRect = Offset.zero & size;
-    //   canvas.clipRect(pictureRect);
-    //   canvas.drawPicture(controller.pictureInfo!.picture);
-    //
-    // }
-
     if (controller.currentContent == null) {
       return;
     }
-
-    // show = false;
 
     controller.currentContent?.draw(canvas, size, false);
   }
@@ -154,16 +144,11 @@ class _DeepPainter extends CustomPainter {
 
     if (contents.isEmpty && controller.pictureInfo != null) {
       controller.addContent(ImageContent(controller.pictureInfo!));
-      return;
     }
 
-    // if (controller.pictureInfo != null) {
-    //   // final Rect pictureRect = Offset.zero & size;
-    //   // canvas.save();
-    //   // canvas.clipRect(pictureRect);
-    //   canvas.drawPicture(controller.pictureInfo!.picture);
-    //   // canvas.restore();
-    // }
+    if (contents.isEmpty) {
+      return;
+    }
 
     canvas.saveLayer(Offset.zero & size, Paint());
 
