@@ -176,7 +176,7 @@ class _DeepPainter extends CustomPainter {
       return;
     }
 
-    invokeNotShow();
+    // invokeNotShow();
 
     if (controller.pictureInfo != null) {
       final Rect pictureRect = Offset.zero & size;
