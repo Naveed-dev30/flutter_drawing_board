@@ -100,6 +100,7 @@ class Painter extends StatelessWidget {
           clipBehavior: clipBehavior,
           child: RepaintBoundary(
             child: CanvasTouchDetector(
+              gesturesToOverride: [GestureType.onTapDown],
               builder: (BuildContext context) => CustomPaint(
                 painter: _DeepPainter(controller: drawingController),
                 child: RepaintBoundary(
