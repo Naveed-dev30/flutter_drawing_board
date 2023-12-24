@@ -304,14 +304,14 @@ class DrawingController {
     _startPoint = null;
     final int hisLen = _history.length;
 
-    // if (hisLen > _currentIndex) {
-    //   _history.removeRange(_currentIndex, hisLen);
-    // }
+    if (hisLen > _currentIndex) {
+      _history.removeRange(_currentIndex, hisLen);
+    }
 
     if (currentContent != null) {
       _history.add(currentContent!);
       _currentIndex = _history.length;
-      currentContent = null;
+      // currentContent = null;
     }
 
     _refresh();
