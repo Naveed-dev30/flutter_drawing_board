@@ -362,12 +362,20 @@ class DrawingController {
 
   /// 刷新表层画板
   void _refresh() {
-    painter?._refresh();
+    try {
+      painter?._refresh();
+    } catch (e) {
+      //
+    }
   }
 
   /// 刷新底层画板
   void _refreshDeep() {
-    realPainter?._refresh();
+    try {
+      realPainter?._refresh();
+    } catch (e) {
+      //
+    }
   }
 
   /// 销毁控制器
