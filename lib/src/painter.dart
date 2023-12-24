@@ -5,7 +5,7 @@ import 'helper/ex_value_builder.dart';
 import 'paint_contents/paint_content.dart';
 
 /// 绘图板
-class Painter extends StatelessWidget {
+class Painter extends StatefulWidget {
   const Painter({
     super.key,
     required this.drawingController,
@@ -30,42 +30,47 @@ class Painter extends StatelessWidget {
   /// 边缘裁剪方式
   final Clip clipBehavior;
 
+  @override
+  State<Painter> createState() => _PainterState();
+}
+
+class _PainterState extends State<Painter> {
   /// 手指落下
   void _onPointerDown(PointerDownEvent pde) {
-    if (!drawingController.couldStart(1)) {
+    if (!widget.drawingController.couldStart(1)) {
       return;
     }
 
-    drawingController.startDraw(pde.localPosition);
-    onPointerDown?.call(pde);
+    widget.drawingController.startDraw(pde.localPosition);
+    widget.onPointerDown?.call(pde);
   }
 
   /// 手指移动
   void _onPointerMove(PointerMoveEvent pme) {
-    if (!drawingController.couldDraw) {
-      if (drawingController.currentContent != null) {
-        drawingController.endDraw();
+    if (!widget.drawingController.couldDraw) {
+      if (widget.drawingController.currentContent != null) {
+        widget.drawingController.endDraw();
       }
       return;
     }
 
-    drawingController.drawing(pme.localPosition);
-    onPointerMove?.call(pme);
+    widget.drawingController.drawing(pme.localPosition);
+    widget.onPointerMove?.call(pme);
   }
 
   /// 手指抬起
   void _onPointerUp(PointerUpEvent pue) {
-    if (!drawingController.couldDraw ||
-        drawingController.currentContent == null) {
+    if (!widget.drawingController.couldDraw ||
+        widget.drawingController.currentContent == null) {
       return;
     }
 
-    if (drawingController.startPoint == pue.localPosition) {
-      drawingController.drawing(pue.localPosition);
+    if (widget.drawingController.startPoint == pue.localPosition) {
+      widget.drawingController.drawing(pue.localPosition);
     }
 
-    drawingController.endDraw();
-    onPointerUp?.call(pue);
+    widget.drawingController.endDraw();
+    widget.onPointerUp?.call(pue);
   }
 
   /// GestureDetector 占位
@@ -75,6 +80,8 @@ class Painter extends StatelessWidget {
 
   void _onPanEnd(DragEndDetails ded) {}
 
+  bool show = true;
+
   @override
   Widget build(BuildContext context) {
     return Listener(
@@ -83,7 +90,7 @@ class Painter extends StatelessWidget {
       onPointerUp: _onPointerUp,
       behavior: HitTestBehavior.opaque,
       child: ExValueBuilder<DrawConfig>(
-        valueListenable: drawingController.drawConfig,
+        valueListenable: widget.drawingController.drawConfig,
         shouldRebuild: (DrawConfig p, DrawConfig n) =>
             p.fingerCount != n.fingerCount,
         builder: (_, DrawConfig config, Widget? child) {
@@ -95,13 +102,22 @@ class Painter extends StatelessWidget {
           );
         },
         child: ClipRect(
-          clipBehavior: clipBehavior,
+          clipBehavior: widget.clipBehavior,
           child: RepaintBoundary(
             child: CustomPaint(
-              painter: _DeepPainter(controller: drawingController),
+              painter: _DeepPainter(
+                  controller: widget.drawingController,
+                  invokeNotShow: () {
+                    setState(() {
+                      show = false;
+                    });
+                  }),
               child: RepaintBoundary(
                 child: CustomPaint(
-                  painter: _UpPainter(controller: drawingController),
+                  painter: _UpPainter(
+                    controller: widget.drawingController,
+                    show: show,
+                  ),
                 ),
               ),
             ),
@@ -114,10 +130,13 @@ class Painter extends StatelessWidget {
 
 /// 表层画板
 class _UpPainter extends CustomPainter {
-  _UpPainter({required this.controller}) : super(repaint: controller.painter);
+  _UpPainter({
+    required this.controller,
+    required this.show,
+  }) : super(repaint: controller.painter);
 
   final DrawingController controller;
-  bool show = true;
+  final bool show;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -133,8 +152,6 @@ class _UpPainter extends CustomPainter {
       return;
     }
 
-    show = false;
-
     controller.currentContent?.draw(canvas, size, false);
   }
 
@@ -144,9 +161,12 @@ class _UpPainter extends CustomPainter {
 
 /// 底层画板
 class _DeepPainter extends CustomPainter {
-  _DeepPainter({required this.controller})
-      : super(repaint: controller.realPainter);
+  _DeepPainter({
+    required this.controller,
+    required this.invokeNotShow,
+  }) : super(repaint: controller.realPainter);
   final DrawingController controller;
+  final VoidCallback invokeNotShow;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -155,6 +175,8 @@ class _DeepPainter extends CustomPainter {
     if (contents.isEmpty) {
       return;
     }
+
+    invokeNotShow();
 
     if (controller.pictureInfo != null) {
       final Rect pictureRect = Offset.zero & size;
