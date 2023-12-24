@@ -49,4 +49,12 @@ class Rectangle extends PaintContent {
       'paint': paint.toJson(),
     };
   }
+
+  @override
+  bool contains(Offset point) {
+    Rect boundingBox = Rect.fromPoints(startPoint, endPoint);
+
+    // Check if the point is within the bounding box of the rectangle
+    return boundingBox.contains(point);
+  }
 }

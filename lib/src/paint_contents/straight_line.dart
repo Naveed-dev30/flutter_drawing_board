@@ -46,4 +46,30 @@ class StraightLine extends PaintContent {
       'paint': paint.toJson(),
     };
   }
+
+  @override
+  bool contains(Offset point) {
+    final double threshold = 5.0; // Adjust as needed
+
+    double distance = pointLineDistance(point, startPoint, endPoint);
+
+    return distance <= threshold;
+  }
+
+  double pointLineDistance(Offset point, Offset lineStart, Offset lineEnd) {
+    double lengthSquared = (lineEnd - lineStart).distanceSquared;
+    if (lengthSquared == 0.0) {
+      return (point - lineStart).distance;
+    }
+
+    double t = ((point - lineStart).dx * (lineEnd - lineStart).dx +
+            (point - lineStart).dy * (lineEnd - lineStart).dy) /
+        lengthSquared;
+
+    t = t.clamp(0.0, 1.0);
+
+    Offset projection = Offset.lerp(lineStart, lineEnd, t)!;
+
+    return (point - projection).distance;
+  }
 }

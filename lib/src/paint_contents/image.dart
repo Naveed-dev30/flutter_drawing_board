@@ -29,4 +29,9 @@ class ImageContent extends PaintContent {
   Map<String, dynamic> toContentJson() {
     return {};
   }
+
+  @override
+  bool contains(Offset point) {
+    return false;
+  }
 }

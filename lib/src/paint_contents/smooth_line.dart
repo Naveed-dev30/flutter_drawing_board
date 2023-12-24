@@ -96,4 +96,9 @@ class SmoothLine extends PaintContent {
       'paint': paint.toJson(),
     };
   }
+
+  @override
+  bool contains(Offset point) {
+    return points.contains(point);
+  }
 }

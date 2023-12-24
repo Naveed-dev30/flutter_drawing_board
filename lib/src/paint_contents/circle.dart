@@ -89,4 +89,10 @@ class Circle extends PaintContent {
       'paint': paint.toJson(),
     };
   }
+
+  @override
+  bool contains(Offset point) {
+    double distance = (point - center).distance;
+    return distance <= radius;
+  }
 }

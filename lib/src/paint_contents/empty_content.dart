@@ -23,4 +23,9 @@ class EmptyContent extends PaintContent {
   Map<String, dynamic> toContentJson() {
     return <String, dynamic>{};
   }
+
+  @override
+  bool contains(Offset point) {
+    return false;
+  }
 }

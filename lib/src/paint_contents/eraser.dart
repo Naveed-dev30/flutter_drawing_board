@@ -55,4 +55,9 @@ class Eraser extends PaintContent {
       'paint': paint.toJson(),
     };
   }
+
+  @override
+  bool contains(Offset point) {
+    return false;
+  }
 }
